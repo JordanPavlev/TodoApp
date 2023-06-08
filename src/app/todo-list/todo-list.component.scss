@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  justify-content: center;
+
+  .columns {
+    display: flex;
+    width: 100%;
+  }
+
+  .todo-list-items {
+    text-align: center;
+  }
+
+  .section-title, .column-title {
+    background-color: ghostwhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .section-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+  }
+
+  .section-card.active {
+    background-color: #eee;
+  }
+}
+
+button, input {
+  margin: 6px;
+}
+
+mat-icon {
+  cursor: pointer;
+}
+
+mat-tab {
+  text-align: center;
+
+}
+
+mat-menu {
+  padding: 12px;
+}
+
+mat-tab-group {
+  width: 800px;
+}

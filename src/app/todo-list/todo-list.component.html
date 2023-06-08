@@ -1,0 +1,101 @@
+<div class="container">
+  <mat-tab-group>
+    <mat-tab
+      [label]="section.name"
+      *ngFor="let section of sections; let sectionIndex = index"
+    >
+      <div class="section-title">
+        <h2>{{ section.name }}</h2>
+        <mat-icon mat-button [matMenuTriggerFor]="menu">settings</mat-icon>
+        <mat-menu #menu="matMenu">
+          <button (click)="deleteSection(sectionIndex)">
+            Delete Section<mat-icon>delete</mat-icon>
+          </button>
+          <br />
+          <button (click)="renameSection(section, newName.value)">
+            Rename Section <mat-icon>create</mat-icon>
+          </button>
+          <br />
+          <mat-form-field>
+            <input
+              matInput
+              type="text"
+              placeholder="New Name"
+              (click)="stopPropagation($event)"
+              #newName
+              required
+            />
+          </mat-form-field>
+        </mat-menu>
+      </div>
+      <hr />
+      <div class="columns">
+      <div class="column" *ngFor="let column of section.columns; let columnIndex = index">
+        <div class="column-title">
+          <h4>{{ column.name }}</h4>
+
+          <mat-icon (click)="deleteColumn(section, columnIndex)">
+            delete
+          </mat-icon>
+      </div>
+
+        <div class="todo-list-items" *ngFor="let todo of column.todos; let todoIndex = index">
+          <app-todo-item [todo]="todo"></app-todo-item>
+          <mat-icon (click)="deleteTodo(column, todoIndex)" >delete</mat-icon>
+        </div>
+
+        <hr />
+        <mat-icon mat-button [matMenuTriggerFor]="todo">note_add</mat-icon>
+        <mat-menu #todo="matMenu">
+        <form
+        [formGroup]="todoForm"
+          (submit)="
+            addTodo(
+              $event,
+              column,
+              title.value,
+              description.value,
+              deadline.value
+            )
+          "
+        >
+        <mat-form-field>
+          <input matInput type="text" formControlName="title"  placeholder="Title" #title required (click)="stopPropagation($event)" />
+          </mat-form-field>
+          <br />
+          <mat-form-field>
+          <textarea matInput formControlName="description" placeholder="Description" #description required (click)="stopPropagation($event)"></textarea>
+          </mat-form-field>
+          <br />
+          <mat-form-field>
+          <input matInput [matDatepicker]="picker" formControlName="date"  placeholder="Deadline" #deadline (click)="stopPropagation($event)" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker  #picker></mat-datepicker>
+
+          </mat-form-field>
+          <br />
+          <button mat-raised-button  color="primary" type="submit" [disabled]="todoForm.invalid">Add Todo</button>
+        </form>
+        </mat-menu>
+      </div>
+      </div>
+
+      <hr />
+
+      <form (submit)="addColumn($event, section, columnName.value)">
+        <input type="text" placeholder="Column Name" #columnName required />
+        <button type="submit">Add Column</button>
+      </form>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<hr />
+
+<div>
+  <form (submit)="addSection($event, sectionName.value)">
+    <input type="text" placeholder="Section Name" #sectionName required />
+    <button type="submit">Add Section</button>
+  </form>
+</div>
