@@ -148,7 +148,7 @@
     </mat-tab>
   </mat-tab-group>
 
-  <div>
+  <span>
     <mat-icon mat-button [matMenuTriggerFor]="sectionadd">add</mat-icon>
     <mat-menu #sectionadd="matMenu">
       <form (submit)="addSection($event, sectionName.value)">
@@ -167,5 +167,5 @@
         </button>
       </form>
     </mat-menu>
-  </div>
+  </span>
 </div>

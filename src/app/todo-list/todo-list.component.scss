@@ -11,6 +11,11 @@
     height: 100vh;
     overflow-y: hidden;
 
+    @media (max-width: 767px) {
+      flex-direction: column;
+      height: 200%;
+    }
+
     .column {
       text-align: center;
       width: 20%;
@@ -35,6 +40,7 @@
 
       @media (max-width: 767px) {
         padding: 1rem;
+        height: unset;
       }
 
       @media (min-width: 768px) and (max-width: 1023px) {}
