@@ -1,9 +1,10 @@
 import { Component, ViewChild } from '@angular/core';
 import { Section, Column, Todo } from '../models';
-import { FormControl, Validators, FormGroup } from '@angular/forms';
+import { FormControl, Validators, FormGroup, AbstractControl  } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatMenuTrigger } from '@angular/material/menu';
+import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/drag-drop';
 
 
 @Component({
@@ -11,15 +12,78 @@ import { MatMenuTrigger } from '@angular/material/menu';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.scss'],
 })
-
 export class TodoListComponent {
 
-@ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
-
-todoForm : FormGroup
-
-  sections: Section[] = [];
+  @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
+  todoForm: FormGroup;
   activeSectionId: number | null = null;
+  defaultSections: Section[] = [
+    {
+      id: 1,
+      name: 'Common',
+      columns: [
+        {
+          id: 1,
+          name: 'Todo',
+          todos: [],
+        },
+        {
+          id: 2,
+          name: 'In Progress',
+          todos: [],
+        },
+        {
+          id: 3,
+          name: 'Done',
+          todos: [],
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: 'Home',
+      columns: [
+        {
+          id: 1,
+          name: 'Todo',
+          todos: [],
+        },
+        {
+          id: 2,
+          name: 'In Progress',
+          todos: [],
+        },
+        {
+          id: 3,
+          name: 'Done',
+          todos: [],
+        },
+      ],
+    },
+    {
+      id: 3,
+      name: 'Work',
+      columns: [
+        {
+          id: 1,
+          name: 'Todo',
+          todos: [],
+        },
+        {
+          id: 2,
+          name: 'In Progress',
+          todos: [],
+        },
+        {
+          id: 3,
+          name: 'Done',
+          todos: [],
+        },
+      ],
+    },
+  ];
+  sections: Section[] = this.defaultSections;
+
 
   //  Constructor
   constructor(private route: ActivatedRoute) {
@@ -28,92 +92,28 @@ todoForm : FormGroup
     });
 
     this.todoForm = new FormGroup({
-      title: new FormControl('asd', Validators.required),
+      title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      // date: new FormControl("", Validators.required )
     });
   }
 
-  // On Init
+  // On Init add default sections and columns
   ngOnInit() {
-    this.addDefaultSections();
   }
 
+  handleDateInput(event: any) {
+    const input = event.target.value;
+    const validDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
+    if (!validDateRegex.test(input)) {
+      event.target.value = '';
+    }
+  }
 
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();
   }
 
-  addDefaultSections() {
-    const defaultSections: Section[] = [
-      {
-        id: 1,
-        name: 'Common',
-        columns: [
-          {
-            id: 1,
-            name: 'Todo',
-            todos: [],
-          },
-          {
-            id: 2,
-            name: 'In Progress',
-            todos: [],
-          },
-          {
-            id: 3,
-            name: 'Done',
-            todos: [],
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: 'Home',
-        columns: [
-          {
-            id: 1,
-            name: 'Todo',
-            todos: [],
-          },
-          {
-            id: 2,
-            name: 'In Progress',
-            todos: [],
-          },
-          {
-            id: 3,
-            name: 'Done',
-            todos: [],
-          },
-        ],
-      },
-      {
-        id: 3,
-        name: 'Work',
-        columns: [
-          {
-            id: 1,
-            name: 'Todo',
-            todos: [],
-          },
-          {
-            id: 2,
-            name: 'In Progress',
-            todos: [],
-          },
-          {
-            id: 3,
-            name: 'Done',
-            todos: [],
-          },
-        ],
-      },
-    ];
-
-    this.sections = defaultSections;
-  }
 
   addSection(event: Event, name: string) {
     event.preventDefault(); // Prevent from reloading the page
@@ -122,7 +122,7 @@ todoForm : FormGroup
       (section) => section.name.toLowerCase() === name.toLowerCase()
     );
 
-    if (sectionNameExists || name === "") {
+    if (sectionNameExists || name === '') {
       return;
     }
 
@@ -200,8 +200,6 @@ todoForm : FormGroup
       column.todos.push(todo);
       this.todoForm.reset();
     }
-
-
   }
 
   deleteTodo(column: Column, index: number) {

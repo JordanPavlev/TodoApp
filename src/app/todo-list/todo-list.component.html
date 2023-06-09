@@ -36,9 +36,9 @@
           </mat-form-field>
         </mat-menu>
       </div>
-      <hr />
-      <div class="columns">
+      <div class="columns" >
         <div
+          cdkDrag
           class="column"
           *ngFor="let column of section.columns; let columnIndex = index"
         >
@@ -50,11 +50,11 @@
             </mat-icon>
           </div>
 
-          <div
+          <div cdkDrag
             class="todo-list-items"
             *ngFor="let todo of column.todos; let todoIndex = index"
           >
-            <app-todo-item [todo]="todo"></app-todo-item>
+            <app-todo-item  [todo]="todo"></app-todo-item>
             <mat-icon (click)="deleteTodo(column, todoIndex)">delete</mat-icon>
           </div>
 
@@ -100,6 +100,7 @@
                   matInput
                   [matDatepicker]="picker"
                   placeholder="Deadline"
+                  (input)="handleDateInput($event)"
                   #deadline
                   (click)="stopPropagation($event)"
                 />
