@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { MatDialogModule } from '@angular/material/dialog';
 import { AppComponent } from './app.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
@@ -12,10 +13,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodoItemDialogComponent } from './todo-item-dialog/todo-item-dialog.component';
-
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatListModule } from '@angular/material/list';
 
@@ -40,10 +39,8 @@ import { MatListModule } from '@angular/material/list';
     MatButtonModule,
     MatDatepickerModule,
     MatTabsModule,
-    AppRoutingModule,
+    RouterModule.forRoot([{ path: '', component: TodoListComponent }]),
     BrowserAnimationsModule,
-
-
   ],
   providers: [],
   bootstrap: [AppComponent],
