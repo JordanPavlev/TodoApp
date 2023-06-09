@@ -1,7 +1,6 @@
 <div (click)="openDialog()" class="todo-item">
   <div class="todo-item-info">
     <h5>{{ todo?.title }}</h5>
-    <h6>{{ todo?.description }}</h6>
     <h6>{{todo?.deadline ? todo?.deadline : "" }}</h6>
   </div>
   <!-- <div *ngIf="showFullInfo">

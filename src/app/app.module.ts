@@ -16,6 +16,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodoItemDialogComponent } from './todo-item-dialog/todo-item-dialog.component';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatListModule } from '@angular/material/list';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,6 +33,8 @@ import { TodoItemDialogComponent } from './todo-item-dialog/todo-item-dialog.com
     FormsModule,
     ReactiveFormsModule,
     MatInputModule,
+    DragDropModule,
+    MatListModule,
     MatIconModule,
     MatNativeDateModule,
     MatButtonModule,
@@ -37,6 +42,8 @@ import { TodoItemDialogComponent } from './todo-item-dialog/todo-item-dialog.com
     MatTabsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+
+
   ],
   providers: [],
   bootstrap: [AppComponent],

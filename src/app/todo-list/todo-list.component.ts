@@ -30,7 +30,7 @@ todoForm : FormGroup
     this.todoForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      date: new FormControl("", Validators.required )
+      date: new FormControl(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/, Validators.required )
     });
   }
 
@@ -122,7 +122,7 @@ todoForm : FormGroup
       (section) => section.name.toLowerCase() === name.toLowerCase()
     );
 
-    if (sectionNameExists) {
+    if (sectionNameExists || name === "") {
       return;
     }
 
