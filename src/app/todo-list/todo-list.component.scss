@@ -183,13 +183,17 @@
   display: flex;
   gap: 75px;
   text-align: center;
-  min-height: 340px;
 }
 
 .column {
   border: 1.5px solid #673ab7;
   border-radius: 14px;
   min-width: 220px;
+  flex: 1;
+  height: fit-content;
+  overflow-y: auto;
+  min-height: 360px;
+
 
   .column-title {
     display: flex;
@@ -207,8 +211,6 @@
 
 
   .column-content {
-    background-color: red;
-    padding: 15px;
     margin: 12px 35px;
   }
 }

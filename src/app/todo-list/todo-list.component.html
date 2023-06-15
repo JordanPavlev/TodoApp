@@ -44,8 +44,8 @@
         <h2>{{ section.name }}</h2>
         <mat-icon mat-button [matMenuTriggerFor]="menu">settings</mat-icon>
         <mat-menu #menu="matMenu">
-          <button mat-raised-button color="primary" (click)="deleteSection(sectionIndex)">
-            Delete Section<mat-icon>delete</mat-icon>
+          <button mat-raised-button color="warn" (click)="deleteSection(sectionIndex)">
+            Delete Section<mat-icon>clear</mat-icon>
           </button>
           <br />
           <button mat-raised-button color="primary" (click)="renameSection(section, newName.value)">
@@ -63,15 +63,16 @@
             <div class="column-title">
               <span>{{ column.name }}</span>
 
-              <mat-icon (click)="deleteColumn(section, columnIndex)">
-                delete
-              </mat-icon>
+              <button (click)="deleteColumn(section, columnIndex)" mat-icon-button color="warn" aria-label="example">
+                <mat-icon>clear</mat-icon>
+              </button>
             </div>
             <div class="column-content">
               <div class="todo-list-items" cdkDrag *ngFor="let todo of column.todos; let todoIndex = index">
                 <app-todo-item [todo]="todo"></app-todo-item>
-                <mat-icon (click)="deleteTodo(column, todoIndex)">delete</mat-icon>
-              </div>
+                <button (click)="deleteTodo(column, todoIndex)" mat-icon-button color="warn" aria-label="Example icon button with a home icon">
+                  <mat-icon>clear</mat-icon>
+                </button>              </div>
             </div>
 
             <button [matMenuTriggerFor]="todo" mat-icon-button color="primary" aria-label="Example icon button with a home icon">
@@ -90,11 +91,11 @@
                   )
                 ">
                 <mat-form-field>
-                  <input matInput type="text" formControlName="title" placeholder="Title" #title required (click)="stopPropagation($event)" />
+                  <input matInput type="text" [maxLength]="18" formControlName="title" placeholder="Title" #title required (click)="stopPropagation($event)" />
                 </mat-form-field>
                 <br />
                 <mat-form-field>
-                  <textarea matInput formControlName="description" placeholder="Description" #description required (click)="stopPropagation($event)"></textarea>
+                  <textarea matInput [maxLength]="30" formControlName="description" placeholder="Description" #description required (click)="stopPropagation($event)"></textarea>
                 </mat-form-field>
                 <br />
                 <mat-form-field>
