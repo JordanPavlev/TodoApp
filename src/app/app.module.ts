@@ -10,16 +10,17 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
+import {MatChipsModule} from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import {MatCardModule} from '@angular/material/card';
-
+import {MatSidenavModule} from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TodoItemDialogComponent } from './todo-item-dialog/todo-item-dialog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatListModule } from '@angular/material/list';
-
+import { AppRoutingModule } from './app-routing.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,12 +38,14 @@ import { MatListModule } from '@angular/material/list';
     DragDropModule,
     MatCardModule,
     MatListModule,
+    AppRoutingModule,
     MatIconModule,
+    MatSidenavModule,
     MatNativeDateModule,
+    MatChipsModule,
     MatButtonModule,
     MatDatepickerModule,
     MatTabsModule,
-    RouterModule.forRoot([{ path: '', component: TodoListComponent }]),
     BrowserAnimationsModule,
   ],
   providers: [],

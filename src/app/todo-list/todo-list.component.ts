@@ -1,11 +1,22 @@
 import { Component, ViewChild } from '@angular/core';
 import { Section, Column, Todo } from '../models';
-import { FormControl, Validators, FormGroup, AbstractControl  } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {
+  FormControl,
+  Validators,
+  FormGroup,
+  AbstractControl,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatMenuTrigger } from '@angular/material/menu';
-import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/drag-drop';
-
+import {
+  CdkDragDrop,
+  CdkDropList,
+  CdkDrag,
+  moveItemInArray,
+  transferArrayItem,
+  CdkDragEnd,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-todo-list',
@@ -13,10 +24,9 @@ import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/d
   styleUrls: ['./todo-list.component.scss'],
 })
 export class TodoListComponent {
-
   @ViewChild(MatMenuTrigger) menuTrigger!: MatMenuTrigger;
   todoForm: FormGroup;
-  activeSectionId: number | null = null;
+  currentSectionName: string;
   defaultSections: Section[] = [
     {
       id: 1,
@@ -83,22 +93,47 @@ export class TodoListComponent {
     },
   ];
   sections: Section[] = this.defaultSections;
-
+  filteredSections: Section[];
+  initialized = false;
 
   //  Constructor
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe((params) => {
-      this.activeSectionId = parseInt(params['sectionId'], 10);
-    });
-
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.todoForm = new FormGroup({
       title: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
     });
   }
 
-  // On Init add default sections and columns
   ngOnInit() {
+
+      console.log('tova e nachaloto na inita-----');
+      console.log(this.currentSectionName);
+      console.log(this.filteredSections);
+
+      this.route.paramMap.subscribe((params) => {
+        this.currentSectionName = params.get('sectionName');
+        console.log(this.currentSectionName + 'tova e sled params.get');
+if (this.currentSectionName) {
+        this.filteredSections = this.sections.filter(
+          (section) => section.name === this.currentSectionName
+        );
+      } else {
+        this.filteredSections = [this.sections[0]];
+        this.currentSectionName = 'Common';
+      }
+
+      });
+
+
+
+      console.log('tova e kraqt na inita---------');
+      console.log(this.currentSectionName);
+      console.log(this.filteredSections);
+
+  }
+
+  ngOnDestroy() {
+    console.log('tova e destorya');
   }
 
   handleDateInput(event: any) {
@@ -112,6 +147,19 @@ export class TodoListComponent {
 
   stopPropagation(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  drop(event: CdkDragDrop<Todo[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );
+    }
   }
 
 
@@ -149,6 +197,10 @@ export class TodoListComponent {
     };
 
     this.sections.push(section);
+    // this.filterSections();
+    // this.currentSectionName = section.name;
+    // this.filteredSections = [section];
+    // this.router.navigate([section.name])
   }
 
   deleteSection(index: number) {
