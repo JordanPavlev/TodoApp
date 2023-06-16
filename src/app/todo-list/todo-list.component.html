@@ -69,7 +69,11 @@
       </div>
       <div>
         <div class="columns" cdkDropListGroup>
-          <div class="column" cdkDropList [cdkDropListData]="column.todos" (cdkDropListDropped)="drop($event)" #todoList="cdkDropList" [cdkDropListConnectedTo]="[todoList]" *ngFor="let column of section.columns; let columnIndex = index">
+          <div class="column-wrapper" cdkDropList  (cdkDropListDropped)="dropColumn($event)" [cdkDropListData]="section.columns">
+          <div class="column" cdkDropList [cdkDropListData]="column.todos"
+          (cdkDropListDropped)="drop($event)" #todoList="cdkDropList"
+          [cdkDropListConnectedTo]="[todoList]" cdkDrag
+          *ngFor="let column of section.columns; let columnIndex = index">
             <div class="column-title">
               <span>{{ column.name }}</span>
 
@@ -80,7 +84,7 @@
             <div class="column-content">
               <div class="todo-list-items" cdkDrag *ngFor="let todo of column.todos; let todoIndex = index">
                 <app-todo-item [todo]="todo"></app-todo-item>
-                <button (click)="deleteTodo(column, todoIndex)" mat-icon-button color="warn" aria-label="Example icon button with a home icon">
+                <button (click)="deleteTodo(column, todoIndex)" mat-icon-button color="warn">
                   <mat-icon>clear</mat-icon>
                 </button>
               </div>
@@ -121,7 +125,7 @@
                 </button>
               </form>
             </mat-menu>
-          </div>
+          </div></div>
 
           <button [matMenuTriggerFor]="todo" mat-fab color="primary">
             <mat-icon>add</mat-icon>

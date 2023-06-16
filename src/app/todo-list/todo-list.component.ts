@@ -145,6 +145,23 @@ export class TodoListComponent {
     }
   }
 
+  dropColumn(event: CdkDragDrop<Column[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+  }
+
   addSection(event: Event, name: string) {
     event.preventDefault(); // Prevent from reloading the page
 
