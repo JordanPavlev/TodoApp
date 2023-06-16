@@ -94,7 +94,6 @@ export class TodoListComponent {
   ];
   sections: Section[] = this.defaultSections;
   filteredSections: Section[];
-  initialized = false;
 
   //  Constructor
   constructor(private route: ActivatedRoute, private router: Router) {
@@ -105,36 +104,16 @@ export class TodoListComponent {
   }
 
   ngOnInit() {
-
-      console.log('tova e nachaloto na inita-----');
-      console.log(this.currentSectionName);
-      console.log(this.filteredSections);
-
-      this.route.paramMap.subscribe((params) => {
-        this.currentSectionName = params.get('sectionName');
-        console.log(this.currentSectionName + 'tova e sled params.get');
-if (this.currentSectionName) {
+    this.route.paramMap.subscribe((params) => {
+      this.currentSectionName = params.get('sectionName');
+      if (this.currentSectionName) {
         this.filteredSections = this.sections.filter(
           (section) => section.name === this.currentSectionName
         );
-      } else {
-        this.filteredSections = [this.sections[0]];
-        this.currentSectionName = 'Common';
       }
-
-      });
-
-
-
-      console.log('tova e kraqt na inita---------');
-      console.log(this.currentSectionName);
-      console.log(this.filteredSections);
-
+    });
   }
 
-  ngOnDestroy() {
-    console.log('tova e destorya');
-  }
 
   handleDateInput(event: any) {
     const input = event.target.value;
@@ -151,17 +130,20 @@ if (this.currentSectionName) {
 
   drop(event: CdkDragDrop<Todo[]>) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
     } else {
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
-        event.currentIndex,
+        event.currentIndex
       );
     }
   }
-
 
   addSection(event: Event, name: string) {
     event.preventDefault(); // Prevent from reloading the page
@@ -197,14 +179,17 @@ if (this.currentSectionName) {
     };
 
     this.sections.push(section);
-    // this.filterSections();
-    // this.currentSectionName = section.name;
-    // this.filteredSections = [section];
-    // this.router.navigate([section.name])
   }
 
   deleteSection(index: number) {
     this.sections.splice(index, 1);
+    this.filteredSections = this.sections;
+
+    if (this.sections.length === 0) {
+      this.router.navigate(['/']);
+      this.filteredSections = [];
+      this.currentSectionName = undefined;
+    }
   }
 
   renameSection(section: Section, newName: string) {
